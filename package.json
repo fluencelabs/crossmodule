@@ -4,33 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --sourceMap --validate --debug",
-    "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --sourceMap --validate --optimize",
+    "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --sourceMap --validate --debug --runtime stub",
+    "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --sourceMap --validate --optimize --runtime stub",
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
-    "asbuild:test": "npm run asbuild:test:crossmodule",
-    "asbuild:test:crossmodule": "npx asc tests/assembly/crossmodule-test.spec.as.ts -b tests/build/crossmodule-test.wasm -t tests/build/crossmodule-test.wat --validate --sourceMap --importMemory --debug",
-    "test": "npm run asbuild:test && ava -v --serial",
-    "test:ci": "npm run asbuild:test && ava --fail-fast --serial"
+    "test": "asp"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@as-pect/assembly": "^2.3.1",
+    "@as-pect/cli": "^2.3.1",
+    "@as-pect/core": "^2.3.1",
     "@types/node": "^10.12.3",
-    "assemblyscript": "fluencelabs/assemblyscript",
+    "assemblyscript": "assemblyscript/assemblyscript",
     "ts-node": "^7.0.1",
-    "ava": "^1.4.0",
     "typescript": "^3.1.6"
-  },
-  "ava": {
-    "compileEnhancements": true,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register/transpile-only"
-    ],
-    "files": [
-      "tests/**/*.spec.ts"
-    ]
   }
 }

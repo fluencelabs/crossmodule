@@ -72,20 +72,20 @@ export class ByteInvoke {
     return resultBytes;
   }
 
-  sendBytes(localPtr: i32, len: i32): i32 {
-    let addr = this.api.allocate(len);
+  sendBytes(buffer: Uint8Array): i32 {
+    let addr = this.api.allocate(buffer.byteLength);
 
-    for (let i = 0; i < len; i++) {
-      let b: u8 = load<u8>(localPtr + i) as u8;
+    for (let i = 0; i < buffer.byteLength; i++) {
+      let b: u8 = buffer[i];
       this.api.store(addr + i, b);
     }
 
     return addr;
   }
 
-  invoke(ptr: i32, len: i32): Uint8Array {
-    let requestPtr = this.sendBytes(ptr, len);
-    let resultPtr = this.api.invokeImpl(requestPtr, len);
+  invoke(buffer: Uint8Array): Uint8Array {
+    let requestPtr = this.sendBytes(buffer);
+    let resultPtr = this.api.invokeImpl(requestPtr, buffer.byteLength);
     return this.getBytes(resultPtr);
   }
 }
@@ -99,11 +99,10 @@ export class StringInvoke {
   }
 
   invoke(request: string): string {
-    let utf8ptr = request.toUTF8();
-    let len = request.length;
+    let buffer = String.UTF8.encode(request);
 
-    let resultBytes = this.byteInvoker.invoke(utf8ptr, len);
+    let resultBytes = this.byteInvoker.invoke(Uint8Array.wrap(buffer));
 
-    return String.fromUTF8(resultBytes.buffer.data, resultBytes.length);
+    return String.UTF8.decode(resultBytes.buffer);
   }
 }
