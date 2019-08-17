@@ -50,7 +50,7 @@ export class ByteInvoke {
   }
 
   getBytes(remotePtr: i32): Uint8Array {
-    let lenBytes: u8[] = new Array(4);
+    let lenBytes: i32[] = new Array(4);
     for (let i = 0; i < 4; i++) {
       lenBytes[i] = this.api.load(remotePtr + i);
     }
@@ -58,7 +58,7 @@ export class ByteInvoke {
     let resultLen: i32 = 0;
 
     for (let i = 0; i < 4; i++) {
-      resultLen = resultLen | (lenBytes[i] << (8*(i - 4) as u8))
+      resultLen = resultLen | (lenBytes[i] << ((8*i) as u8))
     }
 
     let resultBytes = new Uint8Array(resultLen);

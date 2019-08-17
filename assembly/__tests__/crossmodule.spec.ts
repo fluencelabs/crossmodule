@@ -16,7 +16,7 @@ class SelfAPI extends API {
         store<u8>(resultPtr + i, b);
       }
 
-      for (let i = 4; i < strLen + 3; i++) {
+      for (let i = 4; i < strLen + 4; i++) {
         store<u8>(resultPtr + i, strBuf[i - 4]);
       }
 
@@ -46,7 +46,7 @@ class SelfAPI extends API {
 describe("crossmodule", () => {
   it("input should be equal to output", () => {
     let stringInvoker = new StringInvoke(SelfAPI.getApi());
-    let request = "some request hello";
+    let request = "very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string vvery long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string v";
     let response = stringInvoker.invoke(request);
 
     log<string>("request: " + request);
